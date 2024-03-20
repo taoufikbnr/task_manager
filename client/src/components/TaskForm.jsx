@@ -1,11 +1,21 @@
 import React, { useState } from 'react'
-
+import axios from "axios";
+import { ToastContainer, toast } from 'react-toastify';
 const TaskForm = () => {
-    const [taskName, setTaskName] = useState('');
+  const [taskName, setTaskName] = useState("");
 
-    const handleSubmit = (e) =>{
+    const addTask = async() =>{
+      if(taskName==="") return toast.error("Input field cannot be empty")
+      try {
+        const response =await axios.post("/api/tasks",{name:taskName});
+        toast.success(response.data.msg);
+      } catch (error) {
+      console.log(error);
+    }        
+    }
+    const handleSubmit = async(e) =>{
         e.preventDefault();
-        console.log(taskName);
+       await addTask();
         setTaskName("");
 
     }
@@ -19,6 +29,7 @@ const TaskForm = () => {
         value={taskName}
         onChange={handleInputChange} />
         <button type='submit'>Add</button>
+        <ToastContainer />
     </form>
   )
 }

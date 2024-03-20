@@ -1,9 +1,9 @@
 {
   "dependencies": {
-    "concurrently": "^8.2.2"
+    "concurrently": "^8.2.2",
+    "react-icons": "^5.0.1"
   },
   "scripts": {
-    "dev" : "concurrently \"  cd api && nodemon app\"    \"cd client && npm start\"" 
+    "dev": "concurrently \"  cd api && nodemon app\"    \"cd client && npm start\""
   }
-
 }
