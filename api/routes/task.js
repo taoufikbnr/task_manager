@@ -3,15 +3,17 @@ const { getTasks, createTask, getTask, deleteTask, updateTask } = require("../co
 
 const Router = express.Router();
 
-Router.post("/tasks",createTask);
+//@desc : /api/tasks
 
-Router.get("/tasks",getTasks);
+Router.post("/",createTask);
 
-Router.get("/task/:id",getTask);
+Router.get("/",getTasks);
 
-Router.delete("/task/:id",deleteTask);
+Router.get("/:id",getTask);
 
-Router.put("/task/:id",updateTask);
+Router.delete("/:id",deleteTask);
+
+Router.put("/:id",updateTask);
 
 
 

@@ -1,7 +1,13 @@
+import TaskList from "./components/TaskList";
+
 function App() {
+
   return (
-    <div>
-      Hello world!
+    <div className="app">
+      <div className="task-container">
+        <TaskList/>
+        
+      </div>
     </div>
   );
 }
