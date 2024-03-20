@@ -1,10 +1,22 @@
-import { ToastContainer, toast } from 'react-toastify';
 import TaskForm from './TaskForm';
 import Task from './Task';
+import { useEffect, useState } from 'react';
+import axios from 'axios';
 
 const TaskList = () => {
-    const notify = () => toast.success("Wow so easy!");
-
+  const [tasks, setTasks] = useState([])
+  const fetchTasks = async() =>{
+    try {
+      const response = await axios.get("/api/tasks");
+      setTasks(response.data.tasks);
+    } catch (error) {
+      console.log(error);
+    }
+  }
+  useEffect(() => {
+    fetchTasks();
+  }, [])
+  
   return (
     <div>
         <h2>Task Manger</h2>
@@ -18,7 +30,9 @@ const TaskList = () => {
           </p>
         </div>
         <hr />
-        <Task/>
+        {tasks.map((el,i)=>
+          <Task key={i} index={i} name={el.name} />
+        )}
     </div>
   )
 }

@@ -1,10 +1,10 @@
 import {FaCheckDouble, FaEdit, FaRegTrashAlt} from "react-icons/fa"
-const Task = () => {
+const Task = (props) => {
   return (
     <div className='task'>
         <p>
-          <b>1.</b>
-          task 1
+          <b>{props.index}.</b>
+          {props.name}
         </p>
         <div className="task-icons">
           <FaCheckDouble color="green"/>
