@@ -6,7 +6,6 @@ import { toast } from 'react-toastify';
 
 const TaskList = () => {
   const [tasks, setTasks] = useState([]);
-  const [completedTasks, setCompletedTasks] = useState([]);
   const [taskData, setTaskData] = useState({
     name:"",
     completed:false
@@ -53,15 +52,31 @@ const TaskList = () => {
       const response = await axios.put(`/api/tasks/${taskId}`,taskData)
       toast.success(response.data.msg)
       setTaskData({...taskData,name:""})
-      fetchTasks();
       setEditTask(false);
     } catch (error) {
       console.log(error);
     }
   }
+  const completeTask = async(id) =>{
+    try {
+      const response = await axios.put(`/api/tasks/${id}`,{completed:true})
+      fetchTasks()
+    } catch (error) {
+      
+    }
+  } 
+  const renderTasksByCompletion = (completed) => {
+    return tasks.filter(task => task.completed === completed).map((task, i) => (
+      <Task key={i}
+       index={i} 
+       name={task.name} 
+       id={task._id} completed={task.completed}
+        deleteTask={deleteTask} getTask={getTask} completeTask={completeTask} />
+    ));
+  };
   useEffect(() => {
     fetchTasks();
-  }, [])
+  }, [editTask,])
   return (
     <div>
       
@@ -76,18 +91,13 @@ const TaskList = () => {
             <b>Total Task:</b> {tasks.length}
           </p>
           <p>
-            <b>Completed Tasks:</b> 0
+            <b>Completed Tasks:</b> {renderTasksByCompletion(true).length}
           </p>
         </div>
         <hr />
-        {tasks.map((task,i)=>
-          <Task key={i} index={i} 
-          name={task.name} 
-          id={task._id}
-          deleteTask={deleteTask}
-          getTask={getTask}
-             />
-        )}
+        {renderTasksByCompletion(false)}
+        <hr />
+        {renderTasksByCompletion(true)}
     </div>
   )
 }
