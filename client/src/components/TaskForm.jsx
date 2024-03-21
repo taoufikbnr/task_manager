@@ -1,11 +1,8 @@
 import React, { useState } from 'react'
 import axios from "axios";
 import { ToastContainer, toast } from 'react-toastify';
-const TaskForm = () => {
-  const [taskData, setTaskData] = useState({
-    name:"",
-    completed:false
-  });
+const TaskForm = ({taskData,setTaskData,editTask}) => {
+
 
     const addTask = async() =>{
       if(taskData.name==="") return toast.error("Input field cannot be empty",
@@ -21,7 +18,7 @@ const TaskForm = () => {
     const handleSubmit = async(e) =>{
         e.preventDefault();
        await addTask();
-        // setTaskName("");
+        setTaskData({completed:false,name:""});
     }
     const handleInputChange = (e) =>{
       setTaskData(prevState => ({...prevState,[e.target.name]: e.target.value
@@ -32,9 +29,9 @@ const TaskForm = () => {
     <form className='task-form' onClick={handleSubmit}>
         <input type="text" placeholder='Add a task' 
         name="name"
-        // value={taskData.name}
+        value={taskData.name}
         onChange={handleInputChange} />
-        <button type='submit'>Add</button>
+        <button type='submit'>{editTask?"Edit":"Add"}</button>
         <ToastContainer />
     </form>
   )

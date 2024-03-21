@@ -3,13 +3,13 @@ const Task = (props) => {
   return (
     <div className='task'>
         <p>
-          <b>{props.index}.</b>
+          <b>{props.index + 1}.</b>
           {props.name}
         </p>
         <div className="task-icons">
           <FaCheckDouble color="green"/>
-          <FaEdit color="purple"/>
-          <FaRegTrashAlt color="red" />
+          <FaEdit color="purple" onClick={()=>props.getTask(props)} />
+          <FaRegTrashAlt color="red" onClick={()=>props.deleteTask(props.id)} />
         </div>
     </div>
   )
