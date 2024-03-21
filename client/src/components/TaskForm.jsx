@@ -2,13 +2,18 @@ import React, { useState } from 'react'
 import axios from "axios";
 import { ToastContainer, toast } from 'react-toastify';
 const TaskForm = () => {
-  const [taskName, setTaskName] = useState("");
+  const [taskData, setTaskData] = useState({
+    name:"",
+    completed:false
+  });
 
     const addTask = async() =>{
-      if(taskName==="") return toast.error("Input field cannot be empty")
+      if(taskData.name==="") return toast.error("Input field cannot be empty",
+      {autoClose: 2000,
+      pauseOnHover:false})
       try {
-        const response =await axios.post("/api/tasks",{name:taskName});
-        toast.success(response.data.msg);
+        const response =await axios.post("/api/tasks",taskData);
+         toast.success(response.data.msg);
       } catch (error) {
       console.log(error);
     }        
@@ -16,17 +21,18 @@ const TaskForm = () => {
     const handleSubmit = async(e) =>{
         e.preventDefault();
        await addTask();
-        setTaskName("");
-
+        // setTaskName("");
     }
     const handleInputChange = (e) =>{
-       setTaskName(e.target.value);
+      setTaskData(prevState => ({...prevState,[e.target.name]: e.target.value
+    }));
+;
     }
   return (
     <form className='task-form' onClick={handleSubmit}>
         <input type="text" placeholder='Add a task' 
-        name="task"
-        value={taskName}
+        name="name"
+        // value={taskData.name}
         onChange={handleInputChange} />
         <button type='submit'>Add</button>
         <ToastContainer />

@@ -6,7 +6,6 @@ function App() {
     <div className="app">
       <div className="task-container">
         <TaskList/>
-        
       </div>
     </div>
   );
