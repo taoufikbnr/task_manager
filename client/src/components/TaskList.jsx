@@ -2,7 +2,7 @@ import TaskForm from './TaskForm';
 import Task from './Task';
 import { useEffect, useState } from 'react';
 import axios from 'axios';
-import { ToastContainer, toast } from 'react-toastify';
+import { toast } from 'react-toastify';
 
 const TaskList = () => {
   const [tasks, setTasks] = useState([]);
@@ -16,7 +16,7 @@ const TaskList = () => {
 
   const fetchTasks = async() =>{
     try {
-      const promise = axios.get("/api/tasks");
+      const promise =axios.get("/api/tasks");
       const response =await toast.promise(promise,{
         pending: 'Loading',
         success: 'Got the data',
@@ -47,7 +47,18 @@ const TaskList = () => {
       console.log(error);
     }
   }
-
+  const updateTask = async(e)=>{
+    e.preventDefault();
+    try {
+      const response = await axios.put(`/api/tasks/${taskId}`,taskData)
+      toast.success(response.data.msg)
+      setTaskData({...taskData,name:""})
+      fetchTasks();
+      setEditTask(false);
+    } catch (error) {
+      console.log(error);
+    }
+  }
   useEffect(() => {
     fetchTasks();
   }, [])
@@ -58,7 +69,8 @@ const TaskList = () => {
         <TaskForm 
         taskData={taskData}
         setTaskData={setTaskData}
-        editTask={editTask}  />        
+        editTask={editTask}
+        updateTask={updateTask}  />        
         <div className='--flex-between -pb'>
           <p>
             <b>Total Task:</b> {tasks.length}
@@ -69,7 +81,12 @@ const TaskList = () => {
         </div>
         <hr />
         {tasks.map((task,i)=>
-          <Task key={i} index={i} name={task.name} id={task._id} deleteTask={deleteTask} getTask={getTask} />
+          <Task key={i} index={i} 
+          name={task.name} 
+          id={task._id}
+          deleteTask={deleteTask}
+          getTask={getTask}
+             />
         )}
     </div>
   )
